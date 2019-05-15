@@ -1,0 +1,17 @@
+server:
+  port: 8888
+
+tengxunyun:
+  # 腾讯对象存储COS
+  cos:
+    # 密钥
+    accessKey: AKIDQ4Z6XnBujMnKl18X3NhuwmRxHVYRRbtz
+    secretKey: 5yfu2IRRGvPi4LRLDzb3Ur33vcUm283l
+    # 所属区域
+    bucket: ap-guangzhou
+    # 存储桶名称
+    bucketName: binggle-1253769387
+    # 访问路劲
+    path: https://binggle-1253769387.cos.ap-guangzhou.myqcloud.com
+    # 路径前缀
+    qianzui: test/images
