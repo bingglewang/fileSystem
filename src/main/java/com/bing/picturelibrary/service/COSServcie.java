@@ -17,7 +17,7 @@ public interface COSServcie {
      * @param file
      * @return
      */
-    CommonResult<COSResult> upload(MultipartFile file);
+    COSResult upload(MultipartFile file);
 
     /**
      * 下载

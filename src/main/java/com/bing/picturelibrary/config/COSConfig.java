@@ -12,6 +12,7 @@ public class COSConfig {
     private String bucketName;
     private String path;
     private String qianzui;
+    private String locationServer;
 
     public String getAccessKey() {
         return accessKey;
@@ -59,5 +60,13 @@ public class COSConfig {
 
     public void setQianzui(String qianzui) {
         this.qianzui = qianzui;
+    }
+
+    public String getLocationServer() {
+        return locationServer;
+    }
+
+    public void setLocationServer(String locationServer) {
+        this.locationServer = locationServer;
     }
 }

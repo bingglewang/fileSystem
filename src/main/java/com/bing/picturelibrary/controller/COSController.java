@@ -26,7 +26,12 @@ public class COSController {
         if(file == null){
             return CommonResult.failed("文件不能为空");
         }
-        return cosServcie.upload(file);
+        COSResult result = cosServcie.upload(file);
+        if(result != null){
+           return  CommonResult.success(result,"上传成功");
+        }else{
+            return CommonResult.failed("上传失败");
+        }
     }
 
     /**

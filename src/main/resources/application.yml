@@ -1,6 +1,25 @@
 server:
   port: 8888
 
+spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/file_repository_service?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 12345a
+
+mybatis:
+  mapper-locations: classpath:**/*Mapper.xml
+  type-aliases-package: com.bing.picturelibrary.model
+  configuration:
+    map-underscore-to-camel-case: true
+#数据库日志
+logging:
+  level:
+     com.bing.picturelibrary.mapper : debug
+
 tengxunyun:
   # 腾讯对象存储COS
   cos:
@@ -15,3 +34,5 @@ tengxunyun:
     path: https://binggle-1253769387.cos.ap-guangzhou.myqcloud.com
     # 路径前缀
     qianzui: test/images
+    # 存放服务器
+    locationServer: 腾讯COS

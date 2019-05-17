@@ -28,9 +28,10 @@ public class COSServiceImpl implements COSServcie {
     private COSConfig cosConfig;
 
     @Override
-    public CommonResult<COSResult> upload(MultipartFile file) {
-        String oldFileName = file.getOriginalFilename();
-        String eName = oldFileName.substring(oldFileName.lastIndexOf("."));
+    public COSResult upload(MultipartFile file) {
+        String size = file.getSize()*1.0/(1024*1024) + "M";//文件大小
+        String oldFileName = file.getOriginalFilename(); //原始文件名称
+        String eName = oldFileName.substring(oldFileName.lastIndexOf("."));  //文件类型
         String newFileName = UUID.randomUUID()+eName;
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -51,9 +52,9 @@ public class COSServiceImpl implements COSServcie {
             String key = "/"+cosConfig.getQianzui()+"/"+year+"/"+month+"/"+day+"/"+newFileName;
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, localFile);
             PutObjectResult putObjectResult = cosclient.putObject(putObjectRequest);
-            return CommonResult.success(new COSResult(cosConfig.getPath() + putObjectRequest.getKey(),key),"上传成功");
+            return new COSResult(cosConfig.getPath() + putObjectRequest.getKey(),key,eName.substring(1),size,oldFileName);
         } catch (Exception e) {
-            return CommonResult.failed("e.getMessage()");
+            return null;
         }finally {
             // 关闭客户端(关闭后台线程)
             cosclient.shutdown();
