@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bing.picturelibrary.mapper.ImageFileMapper">
+  <resultMap id="BaseResultMap" type="com.bing.picturelibrary.model.ImageFile">
+    <id column="img_id" jdbcType="VARCHAR" property="imgId" />
+    <result column="img_location_server" jdbcType="VARCHAR" property="imgLocationServer" />
+    <result column="img_location" jdbcType="VARCHAR" property="imgLocation" />
+    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+    <result column="img_system_id" jdbcType="VARCHAR" property="imgSystemId" />
+    <result column="img_flag" jdbcType="VARCHAR" property="imgFlag" />
+    <result column="img_attribute" jdbcType="VARCHAR" property="imgAttribute" />
+    <result column="img_specific_unique_value" jdbcType="VARCHAR" property="imgSpecificUniqueValue" />
+    <result column="img_param" jdbcType="VARCHAR" property="imgParam" />
+    <result column="img_remark" jdbcType="VARCHAR" property="imgRemark" />
+    <result column="img_type" jdbcType="VARCHAR" property="imgType" />
+    <result column="img_create_time" jdbcType="TIMESTAMP" property="imgCreateTime" />
+    <result column="img_update_time" jdbcType="TIMESTAMP" property="imgUpdateTime" />
+    <result column="img_open_flag" jdbcType="VARCHAR" property="imgOpenFlag" />
+    <result column="img_status" jdbcType="INTEGER" property="imgStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    img_id, img_location_server, img_location, img_url, img_system_id, img_flag, img_attribute, 
+    img_specific_unique_value, img_param, img_remark, img_type, img_create_time, img_update_time, 
+    img_open_flag, img_status
+  </sql>
+  <!--根据主键查询图片-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from image_file
+    where img_id = #{imgId,jdbcType=VARCHAR} and img_status = 0
+  </select>
+  <!--根据图片主键逻辑删除-->
+  <update id="deleteByPrimaryKey">
+    UPDATE image_file SET img_status = 1 WHERE
+    img_id IN
+    <foreach collection="Ids" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+  <!--根据图片主键批量恢复-->
+  <update id="recovery">
+    UPDATE image_file SET img_status = 0 WHERE
+    img_id IN
+    <foreach collection="Ids" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+  <!--新增图片（全部）-->
+  <insert id="insert" parameterType="com.bing.picturelibrary.model.ImageFile">
+    insert into image_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="imgId != null">
+        img_id,
+      </if>
+      <if test="imgLocationServer != null">
+        img_location_server,
+      </if>
+      <if test="imgLocation != null">
+        img_location,
+      </if>
+      <if test="imgUrl != null">
+        img_url,
+      </if>
+      <if test="imgSystemId != null">
+        img_system_id,
+      </if>
+      <if test="imgFlag != null">
+        img_flag,
+      </if>
+      <if test="imgAttribute != null">
+        img_attribute,
+      </if>
+      <if test="imgSpecificUniqueValue != null">
+        img_specific_unique_value,
+      </if>
+      <if test="imgParam != null">
+        img_param,
+      </if>
+      <if test="imgRemark != null">
+        img_remark,
+      </if>
+      <if test="imgType != null">
+        img_type,
+      </if>
+      <if test="imgCreateTime != null">
+        img_create_time,
+      </if>
+      <if test="imgUpdateTime != null">
+        img_update_time,
+      </if>
+      <if test="imgOpenFlag != null">
+        img_open_flag,
+      </if>
+      <if test="imgStatus != null">
+        img_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="imgId != null">
+        #{imgId,jdbcType=VARCHAR},
+      </if>
+      <if test="imgLocationServer != null">
+        #{imgLocationServer,jdbcType=VARCHAR},
+      </if>
+      <if test="imgLocation != null">
+        #{imgLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null">
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="imgSystemId != null">
+        #{imgSystemId,jdbcType=VARCHAR},
+      </if>
+      <if test="imgFlag != null">
+        #{imgFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="imgAttribute != null">
+        #{imgAttribute,jdbcType=VARCHAR},
+      </if>
+      <if test="imgSpecificUniqueValue != null">
+        #{imgSpecificUniqueValue,jdbcType=VARCHAR},
+      </if>
+      <if test="imgParam != null">
+        #{imgParam,jdbcType=VARCHAR},
+      </if>
+      <if test="imgRemark != null">
+        #{imgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="imgType != null">
+        #{imgType,jdbcType=VARCHAR},
+      </if>
+      <if test="imgCreateTime != null">
+        #{imgCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imgUpdateTime != null">
+        #{imgUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imgOpenFlag != null">
+        #{imgOpenFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="imgStatus != null">
+        #{imgStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <!--根据主键更新图片(全部)-->
+  <update id="updateByPrimaryKey" parameterType="com.bing.picturelibrary.model.ImageFile">
+    update image_file
+    <set>
+      <if test="imgLocationServer != null">
+        img_location_server = #{imgLocationServer,jdbcType=VARCHAR},
+      </if>
+      <if test="imgLocation != null">
+        img_location = #{imgLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl != null">
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="imgSystemId != null">
+        img_system_id = #{imgSystemId,jdbcType=VARCHAR},
+      </if>
+      <if test="imgFlag != null">
+        img_flag = #{imgFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="imgAttribute != null">
+        img_attribute = #{imgAttribute,jdbcType=VARCHAR},
+      </if>
+      <if test="imgSpecificUniqueValue != null">
+        img_specific_unique_value = #{imgSpecificUniqueValue,jdbcType=VARCHAR},
+      </if>
+      <if test="imgParam != null">
+        img_param = #{imgParam,jdbcType=VARCHAR},
+      </if>
+      <if test="imgRemark != null">
+        img_remark = #{imgRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="imgType != null">
+        img_type = #{imgType,jdbcType=VARCHAR},
+      </if>
+      <if test="imgCreateTime != null">
+        img_create_time = #{imgCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imgUpdateTime != null">
+        img_update_time = #{imgUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imgOpenFlag != null">
+        img_open_flag = #{imgOpenFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="imgStatus != null">
+        img_status = #{imgStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where img_id = #{imgId,jdbcType=VARCHAR}
+  </update>
+  <!--列表查询图片文件-->
+  <select id="getImageFileByPage" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM image_file WHERE img_status = 0
+    <if test="query.imgSystemId != null and !query.imgSystemId.trim().isEmpty()">
+      AND img_system_id = #{query.imgSystemId}
+    </if>
+    <if test="query.imgFlag != null and !query.imgFlag.trim().isEmpty()">
+      /*AND img_flag LIKE CONCAT('%', #{query.imgFlag}, '%')*/
+      AND img_flag  = #{query.imgFlag}
+    </if>
+    <if test="query.imgAttribute != null and !query.imgAttribute.trim().isEmpty()">
+      AND img_attribute = #{query.imgAttribute}
+    </if>
+    <if test="query.imgSpecificUniqueValue != null and !query.imgSpecificUniqueValue.trim().isEmpty()">
+      AND img_specific_unique_value = #{query.img_specific_unique_value}
+    </if>
+    <if test="query.imgParam != null and !query.imgParam.trim().isEmpty()">
+      AND img_param = #{query.imgParam}
+    </if>
+    <if test="query.imgType != null and !query.imgType.trim().isEmpty()">
+      AND img_type = #{query.imgType}
+    </if>
+    <if test="query.imgOpenFlag != null and !query.imgOpenFlag.trim().isEmpty()">
+      AND img_open_flag = #{query.imgOpenFlag}
+    </if>
+    <if test="query.imgCreateTime != null and !query.imgCreateTime.trim().isEmpty()">
+      AND (date_format(img_create_time,'%Y-%m-%d') = date_format(query.imgCreateTime,'%Y-%m-%d')))
+    </if>
+    <if test="query.imgUpdateTime != null and !query.imgUpdateTime.trim().isEmpty()">
+      AND (date_format(img_update_time,'%Y-%m-%d') = date_format(query.imgUpdateTime,'%Y-%m-%d')))
+    </if>
+  </select>
+  <!--查询所有图片文件-->
+  <select id="getImageFileAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM image_file WHERE img_status = 0
+  </select>
+</mapper>

@@ -1,0 +1,352 @@
+{
+	"info": {
+		"_postman_id": "fc2be9cf-6f76-476e-a883-5095f6c4f134",
+		"name": "图库",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "文件删除",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://39.108.139.140:8888/file/delete?fileKey=/test/images/2019/5/15/17a6ad5b-5a46-47d9-8adc-242cd1e5b53b.png",
+					"protocol": "http",
+					"host": [
+						"39",
+						"108",
+						"139",
+						"140"
+					],
+					"port": "8888",
+					"path": [
+						"file",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "fileKey",
+							"value": "/test/images/2019/5/15/17a6ad5b-5a46-47d9-8adc-242cd1e5b53b.png"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "文件上传",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8888/file/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"file",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "文件下载",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://39.108.139.140:8888/file/download?fileKey=/test/images/2019/5/15/29fcab53-4709-4610-96da-38839e6a2939.png",
+					"protocol": "http",
+					"host": [
+						"39",
+						"108",
+						"139",
+						"140"
+					],
+					"port": "8888",
+					"path": [
+						"file",
+						"download"
+					],
+					"query": [
+						{
+							"key": "fileKey",
+							"value": "/test/images/2019/5/15/29fcab53-4709-4610-96da-38839e6a2939.png"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "图片更新",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"imgId\":\"52726a28-6293-4a03-8f55-2c94c960ff4a1557972210721\",\n\t\"imgLocationServer\":\"dddfdd\",\n\t\"imgLocation\":\"helffflow\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/image/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"image",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "图片新增",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": ""
+						},
+						{
+							"key": "imgSystemId",
+							"value": "sdfsdf",
+							"type": "text"
+						},
+						{
+							"key": "imgFlag",
+							"value": "傻逼",
+							"type": "text"
+						},
+						{
+							"key": "imgAttribute",
+							"value": "似的发射点",
+							"type": "text"
+						},
+						{
+							"key": "imgSpecificUniqueValue",
+							"value": "士大夫士大夫",
+							"type": "text"
+						},
+						{
+							"key": "imgParam",
+							"value": "似的发射点",
+							"type": "text"
+						},
+						{
+							"key": "imgRemark",
+							"value": "胜多负少",
+							"type": "text"
+						},
+						{
+							"key": "imgType",
+							"value": "士大夫",
+							"type": "text"
+						},
+						{
+							"key": "imgOpenFlag",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8888/image/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"image",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "图片删除",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ids\":[\"52726a28-6293-4a03-8f55-2c94c960ff4a1557972210721\"]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/image",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取图片",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8888/image/52726a28-6293-4a03-8f55-2c94c960ff4a1557972210721",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"image",
+						"52726a28-6293-4a03-8f55-2c94c960ff4a1557972210721"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "批量恢复",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"ids\":[\"52726a28-6293-4a03-8f55-2c94c960ff4a1557972210721\"]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/image/recovery",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"image",
+						"recovery"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取全部的图片文件",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8888/image/getAll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"image",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "根据条件分页查询图片文件",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8888/image/getByPage?imgOpenFlag=N",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"image",
+						"getByPage"
+					],
+					"query": [
+						{
+							"key": "imgOpenFlag",
+							"value": "N"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
