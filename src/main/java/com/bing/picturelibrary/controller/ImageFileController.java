@@ -12,11 +12,13 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -107,10 +109,55 @@ public class ImageFileController {
         imageFile.setImgUrl(result.getUrl()); //访问地址
         int i = imageFileService.insert(imageFile);
         if(i > 0){
-            return CommonResult.success(null,"添加成功");
+            ImageFile imageDetail= imageFileService.selectByPrimaryKey(imageFile.getImgId());
+            ImageFileResult resultData = new ImageFileResult();
+            BeanUtils.copyProperties(imageDetail,resultData);
+            return CommonResult.success(resultData,"添加成功");
         }else{
             return CommonResult.failed("添加失败");
         }
+    }
+
+    /**
+     * 批量添加图片
+     * @param batchFormData
+     * @return
+     */
+    @PostMapping("/addBatch")
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public CommonResult<List<ImageFileResult>> addBatch(@ModelAttribute @Valid BatchFormData batchFormData,BindingResult result1){
+        List<ImageFileResult> resultImageList = new ArrayList<>();
+        if(batchFormData.getFiles() == null || batchFormData.getFiles().length == 0){
+            return CommonResult.failed("至少选择一个文件");
+        }
+        List<COSResult> resultList = cosServcie.batch(batchFormData.getFiles());
+        if(CollectionUtils.isEmpty(resultList)) {
+            return CommonResult.failed("添加失败(上传失败)");
+        }
+        for(COSResult result : resultList) {
+            //向数据库添加图片相关信息
+            ImageFile imageFile = new ImageFile();
+            if (StringUtils.isBlank(batchFormData.getImgOpenFlag())) {
+                batchFormData.setImgOpenFlag("Y");//默认开放
+            }
+            BeanUtils.copyProperties(batchFormData, imageFile);
+            String img_id = UUID.randomUUID() + "" + System.currentTimeMillis(); //生成图片id
+            imageFile.setImgId(img_id);
+            imageFile.setImgLocationServer(cosConfig.getLocationServer()); //存放服务器
+            imageFile.setImgLocation(result.getFileKey()); //存放位置
+            imageFile.setImgUrl(result.getUrl()); //访问地址
+            int i = imageFileService.insert(imageFile);
+            if (i <= 0) {
+                throw new RuntimeException("添加失败");
+            }else{
+                ImageFile imageDetail= imageFileService.selectByPrimaryKey(imageFile.getImgId());
+                ImageFileResult resultData = new ImageFileResult();
+                BeanUtils.copyProperties(imageDetail,resultData);
+                resultImageList.add(resultData);
+            }
+        }
+        return CommonResult.success(resultImageList, "添加成功");
     }
 
     /**

@@ -19,13 +19,53 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class COSServiceImpl implements COSServcie {
     @Autowired
     private COSConfig cosConfig;
+
+
+    @Override
+    public List<COSResult> batch(MultipartFile[] files) {
+        List<COSResult> cosResults = new ArrayList<>();
+        // 获取COSClient操作对象
+        COSClient cosclient= COSClientUtil.getCOSClient();
+        // bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
+        String bucketName = cosConfig.getBucketName();
+
+        for(MultipartFile file : files){
+            String size = file.getSize()*1.0/(1024*1024) + "M";//文件大小
+            String oldFileName = file.getOriginalFilename(); //原始文件名称
+            String eName = oldFileName.substring(oldFileName.lastIndexOf("."));  //文件类型
+            String newFileName = UUID.randomUUID()+eName;
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month=cal.get(Calendar.MONTH) + 1;
+            int day=cal.get(Calendar.DATE);
+            // 简单文件上传, 最大支持 5 GB, 适用于小文件上传, 建议 20 M 以下的文件使用该接口
+            // 大文件上传请参照 API 文档高级 API 上传
+            File localFile = null;
+            try {
+                localFile = File.createTempFile("temp",null);
+                file.transferTo(localFile);
+                // 指定要上传到 COS 上的路径
+                String key = "/"+cosConfig.getQianzui()+"/"+year+"/"+month+"/"+day+"/"+newFileName;
+                PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, localFile);
+                PutObjectResult putObjectResult = cosclient.putObject(putObjectRequest);
+                cosResults.add(new COSResult(cosConfig.getPath() + putObjectRequest.getKey(),key,eName.substring(1),size,oldFileName));
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        // 关闭客户端(关闭后台线程)
+        cosclient.shutdown();
+        return cosResults;
+    }
 
     @Override
     public COSResult upload(MultipartFile file) {
