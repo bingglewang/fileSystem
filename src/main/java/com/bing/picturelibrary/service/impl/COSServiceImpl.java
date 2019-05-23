@@ -5,6 +5,8 @@ import com.bing.picturelibrary.dto.COSResult;
 import com.bing.picturelibrary.service.COSServcie;
 import com.bing.picturelibrary.util.COSClientUtil;
 import com.bing.picturelibrary.util.CommonResult;
+import com.bing.picturelibrary.util.FileType;
+import com.bing.picturelibrary.util.FileTypeJudge;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.GetObjectRequest;
 import com.qcloud.cos.model.ObjectMetadata;
@@ -15,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -41,7 +40,17 @@ public class COSServiceImpl implements COSServcie {
         for(MultipartFile file : files){
             String size = file.getSize()*1.0/(1024*1024) + "M";//文件大小
             String oldFileName = file.getOriginalFilename(); //原始文件名称
-            String eName = oldFileName.substring(oldFileName.lastIndexOf("."));  //文件类型
+            String eName = "";
+            if(oldFileName.lastIndexOf(".") > 0) {
+                eName = oldFileName.substring(oldFileName.lastIndexOf("."));  //文件类型
+            }else{
+                try {
+                    eName =  ((FileType.toMap()).get(FileTypeJudge.getFileType(file.getInputStream()))).toString();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    return null;
+                }
+            }
             String newFileName = UUID.randomUUID()+eName;
             Calendar cal = Calendar.getInstance();
             int year = cal.get(Calendar.YEAR);
@@ -71,7 +80,17 @@ public class COSServiceImpl implements COSServcie {
     public COSResult upload(MultipartFile file) {
         String size = file.getSize()*1.0/(1024*1024) + "M";//文件大小
         String oldFileName = file.getOriginalFilename(); //原始文件名称
-        String eName = oldFileName.substring(oldFileName.lastIndexOf("."));  //文件类型
+        String eName = "";
+        if(oldFileName.lastIndexOf(".") > 0) {
+            eName = oldFileName.substring(oldFileName.lastIndexOf("."));  //文件类型
+        }else{
+            try {
+                eName =  ((FileType.toMap()).get(FileTypeJudge.getFileType(file.getInputStream()))).toString();
+            }catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+        }
         String newFileName = UUID.randomUUID()+eName;
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
